@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="/imagenes/travelfly.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- SDK de PayPal: Solo incluir una vez -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    <script src="https://www.paypal.com/sdk/js?client-id=AVowC1u7aAF6OVCAaVfJjZLH3atPYCiZIaFYLQ9c879_1BQ-LYG3cvLePLBjviIhfnej8Y2iWfZHGJFJ&components=buttons&currency=USD"></script>
+</head>
+<body>
+    <!-- Navegación superior -->
+    <div class="topnav">
+        <div class="logo-container"><img src="/imagenes/travelfly.png" alt="Logo" class="nav-logo"></div>
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/services">Services</a>
+          <a href="/contact">Contact</a>
+
+            <div class="user-info">
+            <% if (user) { %>
+                <div class="user-box">
+                <img src="/imagenes/<%= user.foto_perfil %>" alt="Perfil" class="img-perfil" />
+                <span class="user-name">Bienvenido, <strong><%= user.username %></strong></span>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="logout-btn">Cerrar sesión</button>
+                </form>
+                </div>
+            <% } else { %>
+                <a href="/login">Iniciar sesión</a> <a href="/login?show=register">Registrarse</a>
+            <% } %>
+            </div>
+    </div>
+
+
+    <!-- Carrusel de imágenes -->
+    <div class="carousel">
+        <div class="carousel-track">
+            <img src="/imagenes/imagenbanner1.png" alt="Slide 1" class="carousel-slide">
+            <img src="/imagenes/imagenbanner2.png" alt="Slide 2" class="carousel-slide">
+            <img src="/imagenes/imagenbanner3.png" alt="Slide 3" class="carousel-slide">
+        </div>
+        <div class="carousel-dots">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+        </div>
+    </div>
+
+<!-- Contenedor de productos -->
+        <h1 class="productos-disponibles">Paquetes a destinos nacionales e internacionales!</h1>
+<div class="search-container">
+  <input type="text" id="buscador" placeholder="Buscar paquete..." class="input-busqueda" />
+  
+  <div class="filtros-wrapper">
+    <button id="toggle-filtros" class="btn-toggle-filtros">
+      <i class="fas fa-sliders-h"></i> Filtros
+    </button>
+
+    <div id="filtros-contenedor" class="filtros">
+      <div class="grupo-filtros">
+        <select id="filtro-precio" class="filtro-select">
+          <option value="">Ordenar por precio</option>
+          <option value="asc">Menor a mayor</option>
+          <option value="desc">Mayor a menor</option>
+        </select>
+
+        <input type="date" id="filtro-fecha" class="filtro-select" />
+
+        <button onclick="aplicarFiltros()" class="btn-filtrar">
+          <i class="fas fa-filter"></i> Aplicar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+            <section class="store">
+                <% productos.forEach((producto, index) => { %>
+                    <div class="producto <%= index >= 6 ? 'oculto' : '' %>" 
+                    data-tipo="<%= producto.descripcion.toLowerCase().includes('internacional') ? 'internacional' : 'nacional' %>" 
+                     data-precio="<%= producto.precio %>">
+            <div class="card-inner">
+                <div class="card-front">
+                <img src='/imagenes/<%= producto.imagen %>' alt                                                              ='<%= producto.producto %>'>
+                <h2><%= producto.producto %></h2>
+                <p>Saliendo desde Buenos Aires</p>
+                <p>Hotel + Vuelo</p>
+                <p>Precio: $<%= producto.precio %></p>
+                </div>
+                <div class="card-back">
+                    <p><%= producto.descripcion %></p>
+                        <label for="fecha-<%= producto.id_producto %>">Fecha de ida:</label>
+                        <select id="fecha-<%= producto.id_producto %>" class="select-fecha">
+                        <% if (producto.fechas && producto.fechas.length > 0) { %>
+                            <% producto.fechas.forEach(f => { %>
+                            <option value="<%= f %>"><%= f %></option>
+                            <% }) %>
+                        <% } else { %>
+                            <option value="" class="sin-fechas">No hay fechas disponibles</option>
+                        <% } %>
+                        </select>
+
+                        <label for="vuelta-<%= producto.id_producto %>">Fecha de vuelta:</label>
+                        <select id="vuelta-<%= producto.id_producto %>" class="select-fecha">
+                        <% if (producto.fechas_vuelta && producto.fechas_vuelta.length > 0) { %>
+                            <% producto.fechas_vuelta.forEach(v => { %>
+                            <option value="<%= v %>"><%= v %></option>
+                            <% }) %>
+                        <% } else { %>
+                            <option value="">No hay fechas de vuelta</option>
+                        <% } %>
+                        </select>
+
+                        <!-- Mostrar la fecha seleccionada -->
+                        <span class="fecha-producto" id="fechas-seleccionadas-<%= producto.id_producto %>">
+                        <%= producto.fechas && producto.fechas.length > 0 ? producto.fechas[0] : "—" %> / <%= producto.fechas_vuelta && producto.fechas_vuelta.length > 0 ? producto.fechas_vuelta[0] : "—" %>
+                        </span>
+                        <p>Clase: 
+                              <select id="clase-<%= producto.id_producto %>">
+                                <option value="normal" <%= producto.clase === 'normal' ? 'selected' : '' %>>Normal</option>
+                                <option value="vip" <%= producto.clase === 'vip' ? 'selected' : '' %>>VIP</option>
+                              </select>
+                            </p>
+
+                            <p>
+                              Asiento: 
+                              <input type="number" min="1" max="<%= producto.asientos_totales || 40 %>" 
+                                    id="asiento-<%= producto.id_producto %>" value="1">
+                            </p>
+                        <button class="btn-carrito"
+                           onclick="(() => {
+                                const ida = document.getElementById('fecha-<%= producto.id_producto %>').value;
+                                const vuelta = document.getElementById('vuelta-<%= producto.id_producto %>').value;
+                                const clase = document.getElementById('clase-<%= producto.id_producto %>').value;
+                                const asiento = document.getElementById('asiento-<%= producto.id_producto %>').value;
+
+                                agregarAlCarrito(
+                                  '<%= producto.id_producto %>',
+                                  '<%= producto.producto %>',
+                                  '<%= producto.precio %>',
+                                  '<%= producto.imagen %>',
+                                  ida,
+                                  vuelta,
+                                  clase,
+                                  asiento
+                                );
+                              })()">
+                            Agregar al carrito
+                        </button>
+                    <div id="paypal-button-container-<%= producto.id_producto %>"></div>
+                </div>
+            </div>
+              <script>
+                paypal.Buttons({
+            createOrder: function(data, actions) {
+              return fetch('/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  id_producto: "<%= producto.id_producto %>",
+                  precio: "<%= producto.precio %>",
+                  descripcion: "<%= producto.descripcion %>"
+                })
+              })
+              .then(res => {
+                if (res.status === 401) {
+                  // No está logueado: redirigir a login
+                  window.location.href = '/login';
+                  // Retornar una promesa que nunca se resuelve para cancelar el pago
+                  return new Promise(() => {});
+                }
+                if (!res.ok) {
+                  throw new Error('No se pudo crear la orden');
+                }
+                return res.json();
+              })
+              .then(data => data.id);
+            },
+                 onApprove: function(data, actions) {
+  return actions.order.capture().then(async function(details) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Pago confirmado',
+      text: 'Confirmando tu reserva...',
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    try {
+      const resConfirm = await fetch('/confirmar-reservas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await resConfirm.json();
+
+      if (resConfirm.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Reserva confirmada!',
+          text: data.mensaje || 'Tu asiento fue reservado exitosamente.'
+        }).then(() => {
+          window.location.href = '/'; // o redirigir a "Mis reservas"
+                            });
+                          } else {
+                            throw new Error(data.error || 'Error al confirmar la reserva');
+                          }
+                        } catch (error) {
+                          console.error('Error al confirmar reserva:', error);
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.message || 'No se pudo completar la reserva'
+                          });
+                        }
+                      });
+                    }
+              }).render("#paypal-button-container-<%= producto.id_producto %>");
+              </script>
+            </div>
+        <% }); %>
+        </section>
+
+        <!-- Botón "Ver más" -->
+        <div class="ver-mas-container">
+        <button id="ver-mas-btn">Ver más +</button>
+        </div>
+
+
+    <hr class="raya">    
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Ubicación -->
+            <div class="footer-section">
+                <h3>Ubicación</h3>
+                <p>Mitre y las Flores 6505</p>
+            </div>
+    
+            <!-- Redes sociales -->
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-links">
+                    <a href="https://facebook.com" target="_blank">
+                        <img src="/imagenes/facebook.png" alt="Facebook">
+                    </a>
+                    <a href="https://twitter.com" target="_blank">
+                        <img src="/imagenes/twitter.png" alt="Twitter">
+                    </a>
+                    <a href="https://instagram.com/99streetz.shop?igsh=MXU0bTBtYzI5MHoxNQ==" target="_blank">
+                        <img src="/imagenes/iglogo.webp" alt="Instagram">
+                    </a>
+                    <a href="https://linkedin.com" target="_blank">
+                        <img src="/imagenes/linkedin.png" alt="LinkedIn">
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Copyright -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 TravelFly. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Carrito flotante -->
+        <div id="carrito-flotante">
+            <button id="carrito-toggle" class="carrito-icono">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="contador-carrito" class="burbuja">0</span>
+            </button>
+        <div id="carrito-detalle">
+            <h4>Carrito</h4>
+            <ul id="lista-carrito"></ul>
+            <button id="vaciar-carrito">Vaciar</button>
+            <button id="pagar-carrito">Pagar</button>
+        </div>
+        </div>
+<!-- index.ejs -->
+<script>
+  let loaderCerrado = false;
+
+  function cerrarLoader() {
+    if (!loaderCerrado) {
+      loaderCerrado = true;
+      const popup = document.querySelector('.swal2-popup.fullscreen-loader');
+      if (popup) {
+        popup.classList.add('fade-out');
+        setTimeout(() => Swal.close(), 500);
+      } else {
+        Swal.close();
+      }
+    }
+  }
+
+  Swal.fire({
+    customClass: { popup: 'fullscreen-loader' },
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    html: `<img src="/imagenes/travelfly.png" alt="Logo TravelFly" class="loader-logo">`,
+    didOpen: () => {
+      Swal.getPopup().style.background = '#ffffff';
+    }
+  });
+
+  setTimeout(cerrarLoader, 5000);
+</script>
+
+<style>
+  .swal2-popup.fullscreen-loader {
+    width: 100vw !important;
+    height: 100vh !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .swal2-popup.fullscreen-loader.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+  }
+  .loader-logo {
+    max-width: 160px;
+    animation: pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.08);
+      opacity: 0.9;
+    }
+  }
+</style>
+<script src="/js/script.js"></script>
+</body>
+</html>

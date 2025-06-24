@@ -1,0 +1,21 @@
+<div class="topnav">
+  <div class="logo-container"><img src="/imagenes/travelfly.png" alt="Logo" class="nav-logo"></div>
+  <a href="/">Home</a>
+  <a href="/about">About</a>
+  <a href="/services">Services</a>
+  <a href="/contact">Contact</a>
+
+  <div class="user-info">
+    <% if (user) { %>
+      <div class="user-box">
+        <img src="/imagenes/<%= user.foto_perfil %>" alt="Perfil" class="img-perfil" />
+        <span class="user-name">Bienvenido, <strong><%= user.username %></strong></span>
+        <form action="/logout" method="POST">
+          <button type="submit" class="logout-btn">Cerrar sesión</button>
+        </form>
+      </div>
+    <% } else { %>
+      <a href="/login">Iniciar sesión</a> <a href="/register">Registrarse</a>
+    <% } %>
+  </div>
+</div>

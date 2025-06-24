@@ -1,0 +1,60 @@
+.about-section {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2rem 2.5rem;
+  background-color: #f0f8ff; /* fondo suave celeste */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 74, 173, 0.15);
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.about-section h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #004aad; /* azul fuerte */
+}
+
+.about-section p {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.about-section p strong {
+  color: #007bff; /* azul vivo para resaltar */
+}
+
+/* RESPONSIVE STYLES */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 1.5rem 1.5rem;
+    margin: 2rem 1rem;
+  }
+
+  .about-section h1 {
+    font-size: 2rem;
+  }
+
+  .about-section p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 1.2rem 1rem;
+  }
+
+  .about-section h1 {
+    font-size: 1.7rem;
+  }
+
+  .about-section p {
+    font-size: 0.95rem;
+  }
+}

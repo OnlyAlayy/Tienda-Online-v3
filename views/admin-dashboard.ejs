@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="/css/admin-dashboard.css">
+</head>
+<body>
+  <div class="admin-container">
+
+    <h1>Panel de administración - Bienvenido <%= user.username %></h1>
+
+    <!-- CREAR NUEVO VIAJE -->
+    <div class="card">
+      <h2>Crear nuevo viaje</h2>
+      <form action="/admin/crear-viaje" method="POST">
+        <label>Destino:</label>
+        <input name="producto" required placeholder="Nombre del destino">
+
+        <label>Precio:</label>
+        <input name="precio" type="number" step="0.01" required placeholder="Precio">
+
+        <label>Descripción:</label>
+        <textarea name="descripcion" rows="3" placeholder="Descripción del viaje" required></textarea>
+
+        <label>Clase:</label>
+        <select name="clase" required>
+          <option value="normal">Normal</option>
+          <option value="vip">VIP</option>
+        </select>
+
+        <label>Imagen (URL):</label>
+        <input name="imagen" required placeholder="URL de la imagen">
+
+        <button type="submit">Crear viaje</button>
+      </form>
+    </div>
+
+    <hr>
+
+    <!-- LISTADO DE VIAJES EXISTENTES -->
+    <h2>Listado de viajes</h2>
+    <% productos.forEach(p => { %>
+      <div class="card">
+        <form action="/admin/editar-viaje/<%= p.id_producto %>" method="POST">
+          <strong>ID:</strong> <%= p.id_producto %><br>
+          <input name="producto" value="<%= p.producto %>">
+          <input name="precio" type="number" step="0.01" value="<%= p.precio %>">
+          <label>Descripción:</label>
+          <textarea name="descripcion" rows="3"><%= p.descripcion %></textarea>
+          <select name="clase">
+            <option value="normal" <%= p.clase === 'normal' ? 'selected' : '' %>>Normal</option>
+            <option value="vip" <%= p.clase === 'vip' ? 'selected' : '' %>>VIP</option>
+          </select>
+          <input name="imagen" value="<%= p.imagen %>">
+          <img src="<%= p.imagen %>" width="60"><br>
+          <button type="submit">Guardar</button>
+        </form>
+
+        <form action="/admin/eliminar-viaje/<%= p.id_producto %>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este viaje?')">
+          <button type="submit" class="btn-eliminar">Eliminar</button>
+        </form>
+
+        <!-- AGREGAR FECHAS -->
+        <form action="/admin/agregar-fecha/<%= p.id_producto %>" method="POST" style="margin-top: 10px;">
+          <label>Agregar Fecha de Ida:</label>
+          <input type="date" name="fecha">
+          <button type="submit">Agregar</button>
+        </form>
+
+        <form action="/admin/agregar-fecha-vuelta/<%= p.id_producto %>" method="POST">
+          <label>Agregar Fecha de Vuelta:</label>
+          <input type="date" name="fecha">
+          <button type="submit">Agregar</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

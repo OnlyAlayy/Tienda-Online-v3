@@ -1,0 +1,174 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f7f9fb;
+  margin: 0;
+  padding: 2rem;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #0b5394;
+}
+
+.admin-container {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card form input,
+.card form select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.card form button {
+  background: #0b5394;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.card form button:hover {
+  background: #073f6b;
+}
+
+.btn-eliminar {
+  background: #c62828 !important;
+}
+
+.btn-eliminar:hover {
+  background: #b71c1c !important;
+}
+
+/* ===== BASE STYLES (MOBILE FIRST) ===== */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f7f9fb;
+  margin: 0;
+  padding: 1rem;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #0b5394;
+  font-size: 1.8rem;
+}
+
+.admin-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card form input,
+.card form select,
+.card form button {
+  width: 100%;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.card form button {
+  background: #0b5394;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.card form button:hover {
+  background: #073f6b;
+}
+
+.btn-eliminar {
+  background: #c62828 !important;
+}
+
+.btn-eliminar:hover {
+  background: #b71c1c !important;
+}
+
+/* ===== TABLET (≥ 600px) ===== */
+@media (min-width: 600px) {
+  .card form {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .card form input,
+  .card form select,
+  .card form button {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+/* ===== DESKTOP (≥ 900px) ===== */
+@media (min-width: 900px) {
+  .card form input,
+  .card form select {
+    flex: 1 1 calc(25% - 1rem);
+  }
+
+  .card form button {
+    flex: 1 1 calc(20% - 1rem);
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .card h3 {
+    font-size: 1.5rem;
+  }
+}

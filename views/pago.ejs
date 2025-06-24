@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmar pago</title>
+    <link rel="stylesheet" href="/css/pago.css">
+</head>
+<body>
+  <h1>Resumen de tu compra</h1>
+
+<ul>
+  <% carrito.forEach(p => { %>
+    <li>
+      <%= p.nombre %> x<%= p.cantidad %> - $<%= (p.precio * p.cantidad).toFixed(2) %><br>
+      <small>Ida: <%= p.fecha_ida || 'No seleccionada' %> | Vuelta: <%= p.fecha_vuelta || 'No seleccionada' %></small>
+    </li>
+  <% }) %>
+</ul>
+
+
+
+  <div id="btn-pagar"></div>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=AVowC1u7aAF6OVCAaVfJjZLH3atPYCiZIaFYLQ9c879_1BQ-LYG3cvLePLBjviIhfnej8Y2iWfZHGJFJ&currency=USD"></script>
+
+<p class="total">
+  Total: $<%= total %>
+</p>
+
+<script>
+  const total = parseFloat('<%= total %>');
+
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return fetch("/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ precio: total.toFixed(2), descripcion: "Compra TravelFly" })
+      })
+      .then(res => res.json())
+      .then(data => data.id);
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        alert("Pago completado por " + details.payer.name.given_name);
+        window.location.href = "/";
+      });
+    }
+  }).render("#btn-pagar");
+</script>
+
+
+</body>
+</html>

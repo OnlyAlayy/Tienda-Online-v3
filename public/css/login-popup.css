@@ -1,0 +1,425 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins);
+
+/* --- RESET GLOBAL --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* --- BODY GENERAL --- */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  color: #2c2c2c;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- HEADER --- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 99;
+  background-color: transparent;
+}
+
+.header-logo-title {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  align-items: center;     /* centra verticalmente si hay más elementos */
+}
+
+.logo-inline {
+  height: 120px; /* tu tamaño */
+  filter: drop-shadow(0 0 6px #ffffff) brightness(1.3);
+}
+
+
+
+/* --- FONDO VIDEO --- */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.6);
+}
+
+/* --- OVERLAY DIFUMINADO --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.3);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- CONTENEDOR FLIP --- */
+.wrapper {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  perspective: 1000px;
+  z-index: 1;
+  padding: 20px;
+}
+
+/* --- CAJA 3D --- */
+.card-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease;
+  min-height: 520px;
+}
+.wrapper.active .card-container {
+  transform: rotateY(180deg);
+}
+
+/* --- CARAS --- */
+.form-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(0, 122, 255, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 4px 8px rgba(0, 122, 255, 0.6),
+    0 0 20px rgba(0, 122, 255, 0.3);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-box.register {
+  transform: rotateY(180deg);
+}
+
+/* --- TÍTULOS --- */
+.form-box h2 {
+  padding: 0px;
+  font-size: 2em;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* --- CAMPOS --- */
+.input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #007aff;
+  margin: 30px 0;
+}
+
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #ffffff;
+  font-weight: 500;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+  top: -5px;
+}
+
+.input-box input.filled ~ label {
+  top: -5px;
+}
+
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0 35px 0 5px;
+}
+
+.input-box .icon {
+  position: absolute;
+  right: 8px;
+  font-size: 1.2em;
+  color: #ffffff;
+  line-height: 57px;
+}
+
+/* --- RECORDATORIO --- */
+.remember-forgot {
+  font-size: .9em;
+  color: #ffffff;
+  font-weight: 500;
+  margin: -15px 0 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.remember-forgot label input {
+  accent-color: #007aff;
+  margin-right: 3px;
+}
+
+.remember-forgot a {
+  color: rgb(0, 200, 255);
+  text-decoration: none;
+}
+
+.remember-forgot a:hover {
+  text-decoration: underline;
+}
+
+/* --- BOTÓN --- */
+.btn {
+  width: 100%;
+  height: 45px;
+  background: #007aff;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* --- CAMBIO DE FORMULARIO --- */
+.login-register {
+  font-size: .9em;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 500;
+  margin: 25px 0 10px;
+}
+
+.login-register p a {
+  color: rgb(0, 200, 255);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-register p a:hover {
+  text-decoration: underline;
+}
+
+/* Contenedor para título + logo en cada formulario */
+.form-box > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;  /* espacio entre logo y texto */
+  margin-bottom: 20px;
+}
+
+/* Títulos */
+.form-box h2 {
+  margin: 0; /* elimina márgenes para que quede alineado */
+  color: white;
+}
+
+.profile-options {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.profile-options label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.profile-options input[type="radio"] {
+  display: none;
+}
+
+.profile-options img.mini-perfil {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.profile-options input[type="radio"]:checked + img.mini-perfil {
+  border-color: #00bfff;
+  transform: scale(1.1);
+}
+
+.profile-select {
+  margin: 20px 0;
+}
+
+.form-box.register .header-logo-title {
+  margin-bottom: -50px;
+}
+
+.form-box.register h2 {
+  margin-top: 20px;
+}
+
+
+/* FORZAR INPUTS TRANSPARENTES INCLUSO CON AUTOCOMPLETADO */
+input {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff; /* color del cursor */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* PARA FIREFOX (opcional) */
+input:-moz-ui-autofill {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  header {
+    padding: 15px 40px;
+    justify-content: center;
+  }
+
+  .logo-inline {
+    height: 90px;
+  }
+
+  .wrapper {
+    width: 90%;
+    padding: 15px;
+    height: auto;
+  }
+
+  .card-container {
+    min-height: auto;
+  }
+
+  .form-box {
+    position: relative; /* importante para evitar superposición */
+    height: auto;
+    min-height: 520px;
+    padding: 30px 25px;
+  }
+
+  .form-box h2 {
+    font-size: 1.8em;
+  }
+
+  .input-box {
+    height: auto;
+    margin: 20px 0;
+  }
+
+  .input-box input {
+    height: 45px;
+  }
+
+  .btn {
+    height: 42px;
+    font-size: 1em;
+  }
+
+  .remember-forgot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .profile-options {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .profile-options img.mini-perfil {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-inline {
+    height: 70px;
+  }
+
+  .wrapper {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .form-box {
+    padding: 25px 20px;
+    min-height: 480px;
+  }
+
+  .form-box h2 {
+    font-size: 1.6em;
+  }
+
+  .input-box label {
+    font-size: 0.95em;
+  }
+
+  .input-box input {
+    font-size: 0.95em;
+    height: 40px;
+  }
+
+  .btn {
+    height: 40px;
+    font-size: 0.95em;
+  }
+
+  .remember-forgot {
+    font-size: 0.85em;
+  }
+
+  .login-register {
+    font-size: 0.85em;
+  }
+
+  .profile-options img.mini-perfil {
+    width: 45px;
+    height: 45px;
+  }
+}

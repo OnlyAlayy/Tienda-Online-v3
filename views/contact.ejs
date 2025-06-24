@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('partials/head', { titulo: titulo }) %>
+  <title>Contacto</title>
+  <link rel="stylesheet" href="/css/contact.css">
+</head>
+<body>
+  <%- include('partials/header', { user: user }) %>
+
+  <section class="contact-section">
+    <h1>Contacto</h1>
+    <p>¿Tenés alguna duda o querés cotizar tu próximo viaje? ¡Escribinos!</p>
+    <form action="/enviar-consulta" method="POST" class="form-contacto">
+      <input type="text" name="nombre" placeholder="Tu nombre" required>
+      <input type="email" name="email" placeholder="Tu correo electrónico" required>
+      <textarea name="mensaje" placeholder="Escribí tu consulta aquí..." rows="6" required></textarea>
+      <button type="submit" class="btn-enviar">Enviar</button>
+    </form>
+  </section>
+
+  <%- include('partials/footer') %>
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const form = document.querySelector('.form-contacto');
+  let isLoggedIn = false;
+
+  // Verificamos si está logueado
+  try {
+    const res = await fetch('/api/user');
+    if (res.ok) {
+      const data = await res.json();
+      isLoggedIn = data.isLoggedIn;
+    }
+  } catch (err) {
+    console.error('Error al verificar el estado de sesión:', err);
+  }
+
+  // Interceptar envío si no está logueado
+  form.addEventListener('submit', (e) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Iniciá sesión',
+        text: 'Debés iniciar sesión para enviar una consulta.',
+        showCancelButton: true,
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Registrarse',
+        confirmButtonColor: '#007aff',
+        cancelButtonColor: '#00c851',
+        background: '#ffffff',
+        color: '#2c2c2c',
+        allowOutsideClick: false,
+        customClass: {
+          popup: 'alerta-estilizada'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/login';
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          window.location.href = '/login?show=register';
+        }
+      });
+    }
+  });
+
+  // Mostrar feedback si viene de ?sent o ?error
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('sent') || params.has('error')) {
+    Swal.fire({
+      icon: params.has('sent') ? 'success' : 'error',
+      title: params.has('sent') ? '¡Gracias!' : 'Error',
+      text: params.has('sent') ? 'Tu mensaje fue enviado correctamente.' : 'No se pudo enviar el mensaje. Intentá más tarde.',
+      confirmButtonText: 'Cerrar',
+      confirmButtonColor: params.has('sent') ? '#007aff' : '#d33',
+      background: '#ffffff',
+      color: '#2c2c2c',
+      allowOutsideClick: false,
+      customClass: {
+        popup: 'alerta-estilizada'
+      }
+    }).then(() => {
+      if (form && params.has('sent')) form.reset();
+
+      // Limpiar la URL para evitar que el alert vuelva
+      history.replaceState(null, '', window.location.pathname);
+
+      // Forzar cierre y limpieza del modal y overlay
+      const swalContainer = document.querySelector('.swal2-container');
+      if (swalContainer) {
+        swalContainer.style.display = 'none';
+        // También remover el nodo si querés
+        // swalContainer.remove();
+      }
+      
+      // Restaurar scroll e interacción
+      document.body.style.overflow = 'auto';
+      document.body.style.pointerEvents = 'auto';
+      
+      // Enfocar el body para evitar foco atrapado
+      document.body.focus();
+    });
+  }
+});
+</script>
+
+
+</body>
+</html>

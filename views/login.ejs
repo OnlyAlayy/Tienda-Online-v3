@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/login-popup.css">
+</head>
+
+<body>
+
+<!-- Video de fondo -->
+<video class="background-video" autoplay muted loop playsinline>
+  <source src="/videos/olas5.mp4" type="video/mp4" />
+  Tu navegador no soporta el video.
+</video>
+
+
+
+
+  <div class="overlay"></div>
+  <div class="highlight"></div>
+
+<div class="wrapper">
+
+  <!-- ¡AQUÍ empieza el contenedor que rota -->
+  <div class="card-container">
+    <!-- Formulario Iniciar sesión -->
+        <div class="form-box login">
+        <div class="header-logo-title">
+            <img src="/imagenes/travelflywhite.png" alt="TravelFly" class="logo-inline" />
+        </div>
+        <h2>Iniciar sesión</h2>
+      <form id="form-login" method="POST" action="/login">
+      <div class="input-box">
+        <span class="icon"><ion-icon name="mail"></ion-icon></span>
+        <input type="text" name="email" id="login-email" required autocomplete="username" />
+        <label for="login-email">Usuario</label>
+      </div>
+
+      <div class="input-box">
+        <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+        <input type="password" name="password" id="login-password" required autocomplete="current-password" />
+        <label for="login-password">Contraseña</label>
+      </div>
+
+      <div class="remember-forgot">
+        <label for="remember">
+          <input type="checkbox" name="remember" id="remember" />
+          Recuérdame
+        </label>
+        <a href="#">¿Te olvidaste?</a>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+
+      <div class="login-register">
+        <p>No tienes cuenta? <a href="#" class="register-link">Registrate</a></p>
+      </div>
+    </form>
+    </div>
+
+    <!-- Formulario Registrarse -->
+        <div class="form-box register">
+        <div class="header-logo-title">
+            <img src="/imagenes/travelflywhite.png" alt="TravelFly" class="logo-inline" />
+        </div>
+        <h2>Registrarse</h2>
+        <form id="form-register" method="POST" action="/register">
+          <div class="input-box">
+            <span class="icon"><ion-icon name="person"></ion-icon></span>
+            <input type="text" name="loginUser" id="register-username" required autocomplete="username" />
+            <label for="register-username">Usuario</label>
+          </div>
+
+          <div class="input-box">
+            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+            <input type="password" name="loginPass" id="register-password" required autocomplete="new-password" />
+            <label for="register-password">Contraseña</label>
+          </div>
+
+          <div class="profile-select">
+            <p style="color: white; font-weight: 500;">Elige tu foto de perfil:</p>
+            <div class="profile-options">
+              <label for="perfil1">
+                <input type="radio" name="foto_perfil" value="default1.png" id="perfil1" checked />
+                <img src="/imagenes/default1.png" class="mini-perfil" />
+              </label>
+              <label for="perfil2">
+                <input type="radio" name="foto_perfil" value="default2.png" id="perfil2" />
+                <img src="/imagenes/default2.png" class="mini-perfil" />
+              </label>
+              <label for="perfil3">
+                <input type="radio" name="foto_perfil" value="default3.png" id="perfil3" />
+                <img src="/imagenes/default3.png" class="mini-perfil" />
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn">Registrarse</button>
+
+          <div class="login-register">
+            <p>¿Ya tienes una cuenta? <a href="#" class="login-link">Inicia sesión</a></p>
+          </div>
+        </form>
+      </div>
+
+  </div> <!-- ← CIERRA card-container -->
+
+</div> <!-- ← CIERRA wrapper -->
+
+
+  <!-- Scripts -->
+  <script src="/js/login-popup.js" defer></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <script>
+  const wrapper = document.querySelector('.wrapper');
+  const registerLink = document.querySelector('.register-link');
+  const loginLink = document.querySelector('.login-link');
+
+  registerLink?.addEventListener('click', e => {
+    e.preventDefault();
+    wrapper.classList.add('active');
+  });
+
+  loginLink?.addEventListener('click', e => {
+    e.preventDefault();
+    wrapper.classList.remove('active');
+  });
+</script>
+
+</body>
+</html>
